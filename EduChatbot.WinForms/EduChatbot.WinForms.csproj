@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\EduLlmChatbot.Services\EduLlmChatbot.Services.csproj" />
+    <ProjectReference Include="..\EduLlmChatbot.Core\EduLlmChatbot.Core.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWindowsForms>true</UseWindowsForms>
+    <AssemblyTitle>Gemini 2.5 Flash Chat</AssemblyTitle>
+    <Product>Gemini Chat</Product>
+    <Description>Google Gemini 2.5 Flash ile sohbet uygulaması</Description>
+  </PropertyGroup>
+
+</Project>
