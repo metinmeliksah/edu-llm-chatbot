@@ -12,16 +12,19 @@ namespace EduChatbot.WinForms;
 public partial class MainForm : Form
 {
     private MainViewModel? _viewModel;
-    private TextBox _apiKeyTextBox;
-    private TextBox _messageTextBox;
-    private Button _sendButton;
-    private FlowLayoutPanel _chatPanel;
-    private Panel _headerPanel;
-    private Panel _inputPanel;
     private Panel _loadingPanel;
     private Label _loadingLabel;
     private readonly System.Windows.Forms.Timer _loadingTimer;
     private int _loadingDots;
+
+    // Designer'dan gelen kontroller için field'lar (Designer dosyasında tanımlı)
+    // Bu field'lar Designer tarafından otomatik oluşturulur
+    private TextBox _apiKeyTextBox => apiKeyTextBox;
+    private TextBox _messageTextBox => messageTextBox;
+    private Button _sendButton => sendButton;
+    private FlowLayoutPanel _chatPanel => chatPanel;
+    private Panel _headerPanel => headerPanel;
+    private Panel _inputPanel => inputPanel;
 
     public MainForm()
     {
@@ -29,7 +32,7 @@ public partial class MainForm : Form
         _loadingTimer.Tick += LoadingTimer_Tick;
         
         InitializeComponent();
-        SetupUI();
+        
         _viewModel = new MainViewModel();
         
         SetupBindings();
@@ -295,122 +298,12 @@ public partial class MainForm : Form
         base.OnFormClosed(e);
     }
 
-    private void SetupUI()
+    private void ChatScrollPanel_Resize(object? sender, EventArgs e)
     {
-        this.Text = "Gemini 2.5 Flash Chat";
-        this.Size = new Size(800, 600);
-        this.BackColor = Color.FromArgb(30, 30, 30);
-        this.ForeColor = Color.White;
-        this.FormBorderStyle = FormBorderStyle.Sizable;
-
-        // Header Panel
-        _headerPanel = new Panel
+        if (sender is Panel scrollPanel && _chatPanel != null && scrollPanel.ClientSize.Width > 20)
         {
-            Dock = DockStyle.Top,
-            Height = 50,
-            BackColor = Color.FromArgb(37, 37, 38),
-            Padding = new Padding(10)
-        };
-
-        var titleLabel = new Label
-        {
-            Text = "Gemini Chat",
-            Font = new Font("Segoe UI", 12F, FontStyle.Bold),
-            ForeColor = Color.White,
-            AutoSize = true,
-            Location = new Point(10, 15)
-        };
-
-        var apiKeyLabel = new Label
-        {
-            Text = "API Key:",
-            ForeColor = Color.FromArgb(170, 170, 170),
-            AutoSize = true,
-            Location = new Point(600, 18)
-        };
-
-        _apiKeyTextBox = new TextBox
-        {
-            Width = 200,
-            BackColor = Color.FromArgb(51, 51, 51),
-            ForeColor = Color.White,
-            BorderStyle = BorderStyle.None,
-            Padding = new Padding(5),
-            Location = new Point(660, 15)
-        };
-
-        _headerPanel.Controls.Add(titleLabel);
-        _headerPanel.Controls.Add(apiKeyLabel);
-        _headerPanel.Controls.Add(_apiKeyTextBox);
-
-        // Chat Panel
-        var chatScrollPanel = new Panel
-        {
-            Dock = DockStyle.Fill,
-            AutoScroll = true,
-            BackColor = Color.FromArgb(30, 30, 30),
-            Padding = new Padding(10)
-        };
-
-        _chatPanel = new FlowLayoutPanel
-        {
-            FlowDirection = FlowDirection.TopDown,
-            WrapContents = false,
-            AutoSize = true,
-            AutoSizeMode = AutoSizeMode.GrowAndShrink,
-            BackColor = Color.FromArgb(30, 30, 30),
-            Dock = DockStyle.Top,
-            Padding = new Padding(10, 10, 10, 10)
-        };
-
-        chatScrollPanel.Controls.Add(_chatPanel);
-        chatScrollPanel.Resize += (s, e) => 
-        {
-            if (chatScrollPanel.ClientSize.Width > 20 && _chatPanel != null)
-            {
-                _chatPanel.Width = chatScrollPanel.ClientSize.Width - 20;
-            }
-        };
-
-        // Input Panel
-        _inputPanel = new Panel
-        {
-            Dock = DockStyle.Bottom,
-            Height = 60,
-            BackColor = Color.FromArgb(37, 37, 38),
-            Padding = new Padding(10)
-        };
-
-        _messageTextBox = new TextBox
-        {
-            Dock = DockStyle.Fill,
-            BackColor = Color.FromArgb(51, 51, 51),
-            ForeColor = Color.White,
-            BorderStyle = BorderStyle.None,
-            Font = new Font("Segoe UI", 9F),
-            Multiline = true,
-            Height = 40
-        };
-
-        _sendButton = new Button
-        {
-            Dock = DockStyle.Right,
-            Width = 100,
-            Text = "Gönder",
-            BackColor = Color.FromArgb(0, 120, 215),
-            ForeColor = Color.White,
-            FlatStyle = FlatStyle.Flat,
-            Margin = new Padding(10, 0, 0, 0),
-            Height = 40
-        };
-        _sendButton.FlatAppearance.BorderSize = 0;
-
-        _inputPanel.Controls.Add(_sendButton);
-        _inputPanel.Controls.Add(_messageTextBox);
-
-        this.Controls.Add(chatScrollPanel);
-        this.Controls.Add(_inputPanel);
-        this.Controls.Add(_headerPanel);
+            _chatPanel.Width = scrollPanel.ClientSize.Width - 20;
+        }
     }
 }
 
